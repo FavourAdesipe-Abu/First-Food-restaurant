@@ -1,0 +1,136 @@
+// import "./App.css";
+import appStyles from "./App.module.css";
+// import "./App.scss";
+
+import styled from "styled-components";
+import React, { useState } from "react";
+import Foods from "./foods";
+export const foodItemsContext = React.createContext();
+
+function App() {
+  const [isChooseFoodPage, setIsChooseFoodPage] = useState(false);
+  const [menuItems, setMenuItems] = useState([
+    {
+      id: 1,
+      name: "Chicken Burger",
+      quantity: 50,
+      desc: "Fried Chicken Burer - lettuse, tomato, cheese and mayonnise",
+      price: "10",
+      image: "cb.jpg",
+    },
+    {
+      id: 2,
+      name: "Veg Burger",
+      quantity: 40,
+      desc: "Plant-Based burger - lettuse, tomato, vegan cheese, and mayonnise",
+      price: "12",
+      image: "vb.jpg",
+    },
+    {
+      id: 3,
+      name: "Chips",
+      quantity: 80,
+      desc: "Potato chips fried to perfection",
+      price: "7",
+      image: "chips.jpg",
+    },
+    {
+      id: 4,
+      name: "Ice Cream",
+      quantity: 20,
+      desc: "Ice cream - Vanilla ice cream double scoop",
+      price: "4",
+      image: "ic.jpg",
+    },
+  ]);
+  const updateMenuItemQuantity = (id, orderQuantity) => {
+    const updatedMenuItems = menuItems.map((item) => {
+      if (item.id === id)
+        return {
+          ...item,
+          quantity: item.quantity - orderQuantity,
+        };
+      return item;
+    });
+    setMenuItems(updatedMenuItems);
+  };
+  const StyledtoggleButton = styled.button`
+    float: left;
+    margin: 5px 0px 0px 3px;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    color: #fff;
+    background-color: #367af6;
+    cursor: pointer;
+  `;
+
+  return (
+    <foodItemsContext.Provider value={menuItems}>
+      <div className={appStyles.App}>
+        <button
+          className={appStyles.toggleButton}
+          onClick={() => setIsChooseFoodPage(!isChooseFoodPage)}
+        >
+          {isChooseFoodPage ? "Availability Check" : "Order Food"}
+        </button>
+        <h3 className={appStyles.title}>Just Food Online Shop</h3>
+        {!isChooseFoodPage && (
+          <>
+            <h4 className={appStyles.subTitle}>Menu Availability</h4>
+            <ul className={appStyles.ulApp}>
+              {menuItems.map((item) => {
+                return (
+                  <li key={item.id} className={appStyles.liApp}>
+                    {item.name} - {item.quantity}
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
+        {isChooseFoodPage && <Foods foodItems={menuItems}></Foods>}
+      </div>
+    </foodItemsContext.Provider>
+
+    // <foodItemsContext.Provider value={menuItems}>
+    //   <div className={appStyles.App}>
+    //     <button
+    //       className="toggleButton"
+    //       // style={toggleButtonStyles}
+    //       onClick={() => setIsChooseFoodPage(!isChooseFoodPage)}
+    //     >
+    //       {isChooseFoodPage ? "Availability Check" : "Order Food"}
+    //     </button>
+
+    //     <h3 className="title">Just Food Online Shop</h3>
+    //     {!isChooseFoodPage && (
+    //       <>
+    //         <h4 className="subTitle">Menu Availability</h4>
+    //         <ul className="ulApp">
+    //           {menuItems.map((item) => {
+    //             return (
+    //               <li key={item.id} className="liApp">
+    //                 {item.name} - {item.quantity}
+    //               </li>
+    //             );
+    //           })}
+    //         </ul>
+    //       </>
+    //     )}
+    //     {isChooseFoodPage && <Foods foodItems={menuItems}></Foods>}
+    //   </div>
+    // </foodItemsContext.Provider>
+  );
+}
+{
+  /* <StyledtoggleButton
+          // className="toggleButton"
+          // style={toggleButtonStyles}
+          onClick={() => setIsChooseFoodPage(!isChooseFoodPage)}
+        >
+          {isChooseFoodPage ? "Availability Check" : "Order Food"}
+        </StyledtoggleButton> */
+}
+export default App;
